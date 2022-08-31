@@ -4,32 +4,33 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-about',
   templateUrl: './about.component.html',
-  styleUrls: ['./about.component.css']
+  styleUrls: ['./about.component.css'],
 })
 export class AboutComponent implements OnInit {
-
-  count: number;
+  agents: Observable<string>; //CREATION OF OBSERVABLE
+  agentName: string;
   constructor() { }
+
   ngOnInit(): void {
+    this.agents = new Observable(function (observer) {
+      try {
+        observer.next('Ram');
 
+        setInterval(() => {
+          observer.next('Mark');
+        }, 3000);
 
-
-  }
-
-  printData() {
-    var observer = new Observable(
-      function subscribe(subscriber) {
-        try {
-          subscriber.next("My First Observable");
-          subscriber.next("Testing Observable");
-          subscriber.complete();
-        } catch (e) {
-          subscriber.error(e);
-        }
+        setInterval(() => {
+          observer.next('Sita');
+        }, 6000);
+      } catch (e) {
+        observer.error(e);
+        
       }
-    );
-    observer.subscribe(x => console.log(x), (e) => console.log(e),
-      () => console.log("Observable is complete"));
+    });
+
+    this.agents.subscribe((data) => {
+      this.agentName = data; // this.agentName value will get updated once observer.next() runs.
+    });
   }
 }
-
