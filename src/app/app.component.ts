@@ -1,6 +1,7 @@
 
 
 import { Component } from '@angular/core';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -8,8 +9,28 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'handson-project';
-  myname = 'Viplav';
+ 
+  studentsList = ['Mark' ,'John','David','Lisa'];
+  student$: Observable<string[]> = of(this.studentsList);
 
-  student = { name: 'viplav', rank: 23 };
+  //NOTE : WE CAN CREATE OBSERVABLE OF STRING AND OBJECT TYPE AS WELL
+constructor() {
+
+}
+
+ngOnInit(): void {
+
+  this.student$.subscribe(
+    data => {
+     
+      console.log(data);
+     // console.warn(typeof this.student$);
+    }
+  )
+
+
+
+}
+
+
 }
