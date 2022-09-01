@@ -1,15 +1,25 @@
-
-
+import { ElementRef } from '@angular/core';
+import { ViewChild } from '@angular/core';
 import { Component } from '@angular/core';
+import { fromEvent } from 'rxjs';
+
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  title = 'handson-project';
-  myname = 'Viplav';
+  @ViewChild('validate')
+  validate: ElementRef | undefined;
 
-  student = { name: 'viplav', rank: 23 };
+  constructor() {}
+
+  rxjsEventObservable() {
+    const btnObservable$ = fromEvent(this.validate?.nativeElement, 'click');
+
+    btnObservable$.subscribe((data) => {
+      console.log(data);
+    });
+  }
 }
