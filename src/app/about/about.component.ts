@@ -16,11 +16,11 @@ export class AboutComponent implements OnInit {
       try {
         observer.next('Ram');
 
-        setInterval(() => {
-          observer.next('Mark');
+        setTimeout(() => {
+          observer.next('Laxman');
         }, 3000);
 
-        setInterval(() => {
+        setTimeout(() => {
           observer.next('Sita');
         }, 6000);
       } catch (e) {
