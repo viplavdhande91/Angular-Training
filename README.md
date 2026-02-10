@@ -1,19 +1,68 @@
+# Send Data from Child to Parent in Angular
 
-# Send data from Child to Parent Component
+This guide explains how a **child component** (`user`) sends data to a **parent component** (`app`) using `@Output()` and `EventEmitter`.
 
+---
 
--  Parent Component => **app** ; Child Component =>**user** 
+## Parent Component: `app`
 
+### app.component.ts
+Create a method that will receive data from the child.
 
--  Create GetDataFromChild() function in **app.component.ts** Because we have to trigger this function on the basis of
-   event happenstance in Child Component.
+```ts
+GetDataFromChild(data: string) {
+  console.log('Received from child:', data);
+}
+```
 
--  Import display selector of **user component** in **app.component.html** file. i.e **<app-user>  </app-user>**
+---
 
-- Bind outputSend Event with GetDataFromChild() function in app.component.html
+### app.component.html
+Use the child selector and bind the child event to the parent method.
 
--  Import **Output,EventEmitter** from angular Core in **user.component.ts** file
+```html
+<app-user (outputSend)="GetDataFromChild($event)"></app-user>
+```
 
--  Output Decorator sends data to function GetDataFromChild() because of Event binding. 
+**Explanation**
 
--  In **user.component.html** file take user input emit the event and recieve event in Parent Component .
+- `outputSend` → event exposed by the child  
+- `$event` → value emitted from the child
+
+---
+
+## Child Component: `user`
+
+### user.component.ts
+Import `Output` and `EventEmitter`, then emit data.
+
+```ts
+import { Component, Output, EventEmitter } from '@angular/core';
+
+export class UserComponent {
+  @Output() outputSend = new EventEmitter<string>();
+
+  sendData(value: string) {
+    this.outputSend.emit(value);
+  }
+}
+```
+
+---
+
+### user.component.html
+Take input and send it to the parent.
+
+```html
+<input #txt type="text" placeholder="Enter value" />
+<button (click)="sendData(txt.value)">Send to Parent</button>
+```
+
+---
+
+## Flow Summary
+
+1. User performs an action in the child component.
+2. Child emits data using `EventEmitter`.
+3. Parent listens through event binding.
+4. Parent method receives the data.
